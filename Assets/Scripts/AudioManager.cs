@@ -9,12 +9,14 @@ public class AudioManager : MonoBehaviour
     public TextMeshProUGUI subtitleText;
     public Image bgc;
     private AudioSource source;
+    private bool hasTriggered = false;
 
     // Start is called before the first frame update
     void Start()
     {
         source = gameObject.AddComponent<AudioSource>();
-
+        subtitleText.text = "";
+        bgc.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -24,13 +26,19 @@ public class AudioManager : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
-            StartCoroutine(PlayConversation());
+            if (!hasTriggered)
+            {
+                StartCoroutine(PlayConversation());
+                hasTriggered = true;
+            }
+            
 
         }
     }
     IEnumerator PlayConversation() {
         foreach (AudioObject audio in conversation)
         {
+            bgc.gameObject.SetActive(true);
             source.PlayOneShot(audio.clip);
             subtitleText.text = audio.subtitle;
             yield return new WaitForSeconds(audio.clip.length);
