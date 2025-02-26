@@ -1,48 +1,42 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 public class AudioManager : MonoBehaviour
 {
-    public AudioObject[] conversation;
+    public static AudioManager instance; // Singleton
     public TextMeshProUGUI subtitleText;
     public Image bgc;
     private AudioSource source;
-    private bool hasTriggered = false;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
+    {
+        // S'assurer qu'il n'y a qu'un seul AudioManager
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void Start()
     {
         source = gameObject.AddComponent<AudioSource>();
         subtitleText.text = "";
         bgc.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public IEnumerator PlayConversation(AudioObject[] conversation)
     {
-
-    }
-    private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player")) {
-            if (!hasTriggered)
-            {
-                StartCoroutine(PlayConversation());
-                hasTriggered = true;
-            }
-            
-
-        }
-    }
-    IEnumerator PlayConversation() {
         foreach (AudioObject audio in conversation)
         {
             bgc.gameObject.SetActive(true);
             source.PlayOneShot(audio.clip);
             subtitleText.text = audio.subtitle;
             yield return new WaitForSeconds(audio.clip.length);
-
         }
         subtitleText.text = "";
         bgc.gameObject.SetActive(false);
