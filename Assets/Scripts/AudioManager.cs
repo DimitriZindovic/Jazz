@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     public TextMeshProUGUI subtitleText;
     public Image bgc;
     private AudioSource source;
+    private bool hasTriggered = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,12 @@ public class AudioManager : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
-            StartCoroutine(PlayConversation());
+            if (!hasTriggered)
+            {
+                StartCoroutine(PlayConversation());
+                hasTriggered = true;
+            }
+            
 
         }
     }
