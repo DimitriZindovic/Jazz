@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 public class AudioManager : MonoBehaviour
 {
     public AudioObject[] conversation;
     public TextMeshProUGUI subtitleText;
+    public Image bgc;
     private AudioSource source;
 
     // Start is called before the first frame update
@@ -35,5 +37,6 @@ public class AudioManager : MonoBehaviour
 
         }
         subtitleText.text = "";
+        bgc.gameObject.SetActive(false);
     }
 }
