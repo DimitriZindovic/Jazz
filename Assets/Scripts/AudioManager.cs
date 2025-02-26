@@ -14,7 +14,8 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         source = gameObject.AddComponent<AudioSource>();
-
+        subtitleText.text = "";
+        bgc.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -31,6 +32,7 @@ public class AudioManager : MonoBehaviour
     IEnumerator PlayConversation() {
         foreach (AudioObject audio in conversation)
         {
+            bgc.gameObject.SetActive(true);
             source.PlayOneShot(audio.clip);
             subtitleText.text = audio.subtitle;
             yield return new WaitForSeconds(audio.clip.length);
