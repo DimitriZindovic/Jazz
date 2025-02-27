@@ -34,8 +34,8 @@ public class Door : MonoBehaviour {
 		}  
 	}
 
-	public void OpenDoor(){
-		open =!open;
+	public void OpenDoor(bool shouldOpen){
+		open = shouldOpen;
 		asource.clip = open?openDoor:closeDoor;
 		asource.Play ();
 	}
